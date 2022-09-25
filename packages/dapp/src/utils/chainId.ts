@@ -1,0 +1,10 @@
+export enum ChainId {
+    MAINNET = 1,
+    POLYGON = 137,
+    GOERLI = 5,
+    POLYGON_TESTNET = 80001,
+    BSC = 56,
+    BSC_TESTNET = 97,
+    ARBITRUM_ONE = 42161,
+    ARBITRUM_RINKEBY = 421611,
+}

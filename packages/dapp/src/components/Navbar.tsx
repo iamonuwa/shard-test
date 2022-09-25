@@ -1,13 +1,21 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
 import { useRouter } from "next/router";
 import { useServiceProvider } from "store/hooks/useServiceProvider";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 import { ServiceProvider } from "./SProvider";
+import { useWalletModal } from "store/hooks/useWallet";
+import Web3Status from "./wallet/Web3Status";
+const WalletModal = dynamic(() => import("./wallet"), {
+  ssr: false,
+});
 
 export const Navbar = () => {
   const router = useRouter();
   const { toggleDialog } = useServiceProvider();
+  const { openWalletDialog } = useWalletModal();
   return (
     <div className="relative z-10 flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -16,15 +24,12 @@ export const Navbar = () => {
         </Link>
       </div>
       <div className="space-x-2">
-        <Button color="blue" onClick={() => toggleDialog(true)}>
-          Add Service Provider
-        </Button>
-        <Button color="blue" onClick={() => router.push("admin/register-vehicle")}>
-          Register Vehicle
-        </Button>
-        <Button color="blue">Connect Wallet</Button>
+        <Button onClick={() => toggleDialog(true)}>Add Service Provider</Button>
+        <Button onClick={() => router.push("admin/register-vehicle")}>Register Vehicle</Button>
+        <Web3Status />
       </div>
       <ServiceProvider />
+      <WalletModal />
     </div>
   );
 };

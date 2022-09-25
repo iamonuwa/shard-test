@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CAR_MODELS } from "services/cars";
+import { FUEL_TYPE } from "services/fuel";
 import { Button } from "./Button";
 import Container from "./Container";
 import Dropdown from "./Dropdown";
@@ -80,7 +81,7 @@ export const Form = () => {
 
             <div className="w-full">
               <Dropdown
-                options={[]}
+                options={FUEL_TYPE}
                 label="Fuel Type"
                 keyPropFn={option => option}
                 valuePropFn={option => option}
