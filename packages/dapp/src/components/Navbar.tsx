@@ -25,7 +25,7 @@ export const Navbar = () => {
       </div>
       <div className="space-x-2">
         <Button onClick={() => toggleDialog(true)}>Add Service Provider</Button>
-        <Button onClick={() => router.push("admin/register-vehicle")}>Register Vehicle</Button>
+        <Button onClick={() => router.push("/create")}>Register Vehicle</Button>
         <Web3Status />
       </div>
       <ServiceProvider />

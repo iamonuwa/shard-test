@@ -211,7 +211,7 @@ const WalletModal: FC<WalletProps> = ({ ENSName }) => {
           <div>
             By connecting a wallet, you agree to{" "}
             <Link className="outline-none" href="#">
-              ShardLabs' Term of Service
+              ShardLabs&apos; Term of Service
             </Link>{" "}
             and acknowledges that you have read and understand the{" "}
             <Link href="#" className="">

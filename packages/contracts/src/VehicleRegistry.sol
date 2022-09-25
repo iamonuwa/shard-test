@@ -6,7 +6,7 @@ import {AccessControl} from "./AccessControl.sol";
 
 import {StringUtil} from "./libraries/String.sol";
 
-contract VehicleRegistry is IVehicleRegistry, AccessControl {
+contract VehicleRegistry is IVehicleRegistry {
     using StringUtil for string;
 
     Vehicle[] public vehicles;
@@ -16,9 +16,9 @@ contract VehicleRegistry is IVehicleRegistry, AccessControl {
     event RegisterVehicle(bytes32 ipfsHash, string id, uint256 timestamp);
     event UpdateHistory(bytes32 ipfsHash, string id, uint256 timestamp);
 
-    constructor() AccessControl() {}
+    constructor() {}
 
-    function register(Vehicle memory data) onlyRole(SERVICE_PROVIDER) external {
+    function register(Vehicle memory data) external {
         require(data.ipfsHash != 0, "VehicleRegistry: Invalid IPFS HASH");
         require(!data.vin.isEmpty(), "VehicleRegistry: Invalid VIN");
         vehicles.push(Vehicle({

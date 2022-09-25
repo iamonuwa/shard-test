@@ -1,6 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { FC, Fragment, ReactNode } from "react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import Image from "next/future/image";
 import { classNames } from "./utils";
 
 interface IBaseProps {}
@@ -84,7 +85,7 @@ const Dropdown: FC<DropdownProps> = props => {
               <Listbox.Button className="relative w-full h-10 cursor-default border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                 {hasImage && (
                   <span className="flex items-center">
-                    <img src={selected.img} alt="" className="h-6 w-6 flex-shrink-0" />
+                    <Image src={selected.img} alt="" className="h-6 w-6 flex-shrink-0" />
                     <span className="ml-3 block truncate">{selected.name}</span>
                   </span>
                 )}

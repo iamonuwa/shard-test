@@ -2,8 +2,7 @@ import { injected } from "connectors";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import { FC } from "react";
 import { formatEtherscanLink, shortenHex } from "utils/format";
-import { LockClosedIcon, ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
-import Identicon from "components/Identicon";
+import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
 import Copy from "./Copy";
 import Link from "next/link";
 import { Button } from "components/Button";
@@ -23,7 +22,6 @@ const AccountDetails: FC<AccountDetailsProps> = ({ toggleWalletModal, openOption
       </div>
       <div className="text-center">
         <div className="flex flex-col">
-          <Identicon />
           <div className="font-base font-extrabold font-sans">{shortenHex(account!)}</div>
         </div>
         <div className="flex justify-center w-full pt-12">
