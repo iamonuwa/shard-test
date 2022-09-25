@@ -6,7 +6,6 @@ import { useServiceProvider } from "store/hooks/useServiceProvider";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 import { ServiceProvider } from "./SProvider";
-import { useWalletModal } from "store/hooks/useWallet";
 import Web3Status from "./wallet/Web3Status";
 const WalletModal = dynamic(() => import("./wallet"), {
   ssr: false,
@@ -15,7 +14,6 @@ const WalletModal = dynamic(() => import("./wallet"), {
 export const Navbar = () => {
   const router = useRouter();
   const { toggleDialog } = useServiceProvider();
-  const { openWalletDialog } = useWalletModal();
   return (
     <div className="relative z-10 flex items-center justify-between">
       <div className="flex items-center gap-4">

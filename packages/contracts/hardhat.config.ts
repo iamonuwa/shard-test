@@ -46,10 +46,16 @@ const config: HardhatUserConfig = {
     },
     goerli: chainConfig("goerli"),
   },
+  gasReporter: {
+    currency: "USD",
+    enabled: process.env.REPORT_GAS ? true : false,
+    excludeContracts: [],
+    src: "./src",
+  },
   paths: {
     artifacts: "./artifacts",
     cache: "./cache",
-    sources: "./src",
+    sources: "./contracts",
     tests: "./test",
   },
   solidity: {
