@@ -98,7 +98,7 @@ export const Form = () => {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button color="blue" className="w-64 py-4 rounded-none" onClick={() => submitForm()}>
+            <Button type="button" className="w-64 py-4 rounded-none" onClick={() => submitForm()}>
               {steps.length > index ? "Next" : "Submit Vehicle Information"}
             </Button>
           </div>

@@ -10,6 +10,7 @@
     "test": "echo true"
   },
   "dependencies": {
+    "@fleekhq/fleek-storage-js": "^1.0.22",
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
     "@metamask/jazzicon": "^2.0.0",
@@ -20,6 +21,7 @@
     "@web3-react/walletconnect-connector": "^6.2.13",
     "copy-to-clipboard": "^3.3.2",
     "focus-visible": "^5.2.0",
+    "formidable": "^2.0.1",
     "framer-motion": "^7.3.6",
     "immer": "^9.0.15",
     "next": "12.3.1",
@@ -27,12 +29,15 @@
     "react-device-detect": "^2.2.2",
     "react-dom": "18.2.0",
     "react-merge-refs": "^2.0.1",
+    "uuid": "^9.0.0",
     "zustand": "^4.1.1"
   },
   "devDependencies": {
+    "@types/formidable": "^2.0.5",
     "@types/node": "18.7.18",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.12",
     "clsx": "^1.2.1",
     "eslint": "8.23.1",
