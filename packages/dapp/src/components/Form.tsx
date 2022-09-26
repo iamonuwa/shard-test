@@ -53,7 +53,7 @@ export const Form = () => {
       </div>
       <Container>
         <form className="space-y-8 border p-3 shadow-sm">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4">
             <div className="w-full">
               <Dropdown
                 options={CAR_MODELS}
@@ -97,8 +97,8 @@ export const Form = () => {
               <Input label="Registration Place" type="text" name="registration_place" placeholder="Cardiff" />
             </div>
           </div>
-          <div className="flex justify-end">
-            <Button type="button" className="w-64 py-4 rounded-none" onClick={() => submitForm()}>
+          <div className="flex sm:justify-center md:justify-end">
+            <Button type="button" className="sm:w-full md:w-64 py-4 rounded-none" onClick={() => submitForm()}>
               {steps.length > index ? "Next" : "Submit Vehicle Information"}
             </Button>
           </div>

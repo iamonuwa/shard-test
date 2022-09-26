@@ -35,7 +35,7 @@ export const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden bg-white text-left shadow-xl transition-all w-[28rem] sm:p-6">
                 <div>
                   <div>
                     {title && (

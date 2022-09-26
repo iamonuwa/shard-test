@@ -13,7 +13,7 @@ function Web3StatusInner() {
   if (account) {
     return (
       <div
-        className="inline-flex font-mono cursor-pointer items-center px-6 py-3 text-sm"
+        className="inline-flex font-mono cursor-pointer items-center px-6 py-3"
         id="web3-status-connected"
         onClick={openWalletDialog}
       >
@@ -32,7 +32,7 @@ function Web3StatusInner() {
     );
   } else {
     return (
-      <Button onClick={openWalletDialog} className="inline-flex font-mono items-center px-6 text-sm">
+      <Button onClick={openWalletDialog} className="inline-flex font-mono items-center px-6">
         Connect Wallet
       </Button>
     );

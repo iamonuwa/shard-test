@@ -17,9 +17,6 @@ const AccountDetails: FC<AccountDetailsProps> = ({ toggleWalletModal, openOption
 
   return (
     <div className="space-y-2">
-      <div className="">
-        <div className="text-lg font-medium leading-6 text-gray-900">Connect Wallet</div>
-      </div>
       <div className="text-center">
         <div className="flex flex-col">
           <div className="font-base font-extrabold font-sans">{shortenHex(account!)}</div>
@@ -39,7 +36,7 @@ const AccountDetails: FC<AccountDetailsProps> = ({ toggleWalletModal, openOption
         </div>
         <div className="flex justify-between pt-6 space-y-2">
           {connector !== injected && (
-            <Button onClick={() => (connector as any).close()} className="rounded-none">
+            <Button onClick={() => (connector as any)?.close()} className="rounded-none">
               Disconnect
             </Button>
           )}

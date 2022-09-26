@@ -14,13 +14,13 @@ contract RoleControl is AccessControl {
 
     /// @dev Restricted to members of the admin role.
     modifier onlyAdmin() {
-        require(isAdmin(msg.sender), "Restricted to admins.");
+        require(isAdmin(msg.sender), "RoleControl: Restricted to admins.");
         _;
     }
 
     /// @dev Restricted to members of the service provider role.
     modifier onlyServiceProvider() {
-        require(isServiceProvider(msg.sender), "Restricted to service provider.");
+        require(isServiceProvider(msg.sender), "RoleControl: Restricted to service provider.");
         _;
     }
     /**
