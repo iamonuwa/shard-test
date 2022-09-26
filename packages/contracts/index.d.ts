@@ -1,5 +1,4 @@
-import { RoleControl } from './typechain';
-import { VehicleRegistry } from './typechain/VehicleRegistry';
+import { RoleControl, VehicleRegistry } from './typechain';
 import { Signers } from './types'
 
 type Fixture<T> = () => Promise<T>;

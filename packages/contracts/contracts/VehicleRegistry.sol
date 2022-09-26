@@ -11,26 +11,28 @@ contract VehicleRegistry is IVehicleRegistry, RoleControl {
 
     Vehicle[] public vehicles;
 
-    mapping(string => uint) public vehicleRepairHistory;
-
-    event RegisterVehicle(bytes32 ipfsHash, string id, uint256 timestamp);
-    event UpdateHistory(bytes32 ipfsHash, string id, uint256 timestamp);
+    mapping(string => VehicleHistory) public vehicleRepairHistory;
 
     constructor() RoleControl(msg.sender) {}
 
-    function register(Vehicle memory data) external onlyServiceProvider() {
+    function register(Vehicle memory data) public onlyServiceProvider {
         require(data.ipfsHash != 0, "VehicleRegistry: Invalid IPFS HASH");
         require(!data.vin.isEmpty(), "VehicleRegistry: Invalid VIN");
-        vehicles.push(Vehicle({
-            vin: data.vin,
-            ipfsHash: data.ipfsHash
-        }));
+        vehicles.push(Vehicle({vin: data.vin, ipfsHash: data.ipfsHash}));
         emit RegisterVehicle(data.ipfsHash, data.vin, block.timestamp);
     }
 
-    function getRepairHistory(string memory _vin) external view {
-    //    return vehicleRepairsHistory[_vin]; 
+    function addRepairHistory(string memory VIN, string memory note)
+        public
+        onlyServiceProvider
+    {
+        vehicleRepairHistory[VIN].vin = VIN;
+        vehicleRepairHistory[VIN].sp = msg.sender;
+        vehicleRepairHistory[VIN].timestamp = block.timestamp;
+        vehicleRepairHistory[VIN].note = note;
+
+        emit UpdateHistory(VIN, block.timestamp, note, msg.sender);
     }
 
-    function getVehicle(string memory _vin) external view {}
+    function getVehicle(string memory _vin) public view {}
 }

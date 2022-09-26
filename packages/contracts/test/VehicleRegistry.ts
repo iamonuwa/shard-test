@@ -42,27 +42,34 @@ describe("Unit tests", async () => {
         })
 
         it('fail to register vehicle when account is not a service provider', async function () {
-            const contract = await this.vehicleRegistry.connect(this.signers.admin)
-            const transaction = contract.register({ vin: "0x0", ipfsHash: metadataHashBytes })
-            await expect(transaction).to.revertedWith("RoleControl: Restricted to service provider.");
+            const contract = this.vehicleRegistry.connect(this.signers.sp1)
+            expect(contract.register({ vin: "0x0", ipfsHash: metadataHashBytes })).to.revertedWith("RoleControl: Restricted to service provider.");
         })
 
-        // it('fail to register vehicle without VIN', async function () {
-        //     const roleControl = await this.roleControl.connect(this.signers.admin)
-        //     await roleControl.addServiceProvider(this.signers.sp1.address)
-        //     const contract = await this.vehicleRegistry.connect(this.signers.sp1)
-        //     const transaction = contract.register({ vin: "", ipfsHash: metadataHashBytes })
-        //     await expect(transaction).to.revertedWith("VehicleRegistry: Invalid VIN");
-        // })
+        it('fail to register vehicle without VIN', async function () {
+            const roleControl = this.roleControl.connect(this.signers.admin)
+            await roleControl.addServiceProvider(this.signers.sp1.address)
+            const transaction = this.vehicleRegistry.connect(this.signers.sp1)
+            expect(transaction.register({ vin: "", ipfsHash: metadataHashBytes })).to.revertedWith("VehicleRegistry: Invalid VIN");
+        })
 
-        // it('fail to register vehicle without metadata', async function () {
-        //     const roleControl = await this.roleControl.connect(this.signers.admin)
-        //     await roleControl.addServiceProvider(this.signers.sp1.address)
-        //     const contract = await this.vehicleRegistry.connect(this.signers.sp1)
-        //     const transaction = contract.register({ vin: "", ipfsHash: zeroContentHashBytes })
-        //     await expect(transaction).to.revertedWith("VehicleRegistry: Invalid IPFS HASH");
-        // })
+        it('fail to register vehicle without metadata', async function () {
+            const roleControl = this.roleControl.connect(this.signers.admin)
+            await roleControl.addServiceProvider(this.signers.sp1.address)
+            const contract = this.vehicleRegistry.connect(this.signers.sp1)
+            const transaction = contract.register({ vin: "", ipfsHash: zeroContentHashBytes })
+            expect(transaction).to.revertedWith("VehicleRegistry: Invalid IPFS HASH");
+        })
 
-        it('fail to update vehicle history', async function () { })
+        it('update vehicle history', async function () {
+            const VIN = "0x0"
+            const roleControl = this.roleControl.connect(this.signers.admin)
+            await roleControl.addServiceProvider(this.signers.sp1.address)
+            const contract = await this.vehicleRegistry.connect(this.signers.sp1)
+            await contract.register({ vin: VIN, ipfsHash: metadataHashBytes })
+            // await contract.addRepairHistory(VIN, "Hello World")
+            console.log(await contract.vehicleRepairHistory(VIN))
+            // expect(contract.vehicleRepairHistory(VIN)).to.equal(VIN)
+        })
     })
 })

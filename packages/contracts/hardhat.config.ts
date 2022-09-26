@@ -1,4 +1,5 @@
 import "@nomicfoundation/hardhat-toolbox";
+import "@nomiclabs/hardhat-etherscan";
 import { config as dotenvConfig } from "dotenv";
 import type { HardhatUserConfig } from "hardhat/config";
 import type { NetworkUserConfig } from "hardhat/types";
@@ -69,6 +70,9 @@ const config: HardhatUserConfig = {
         runs: 800,
       },
     },
+  },
+  etherscan: {
+    apiKey: process.env.API_KEY
   },
   typechain: {
     outDir: "typechain",
