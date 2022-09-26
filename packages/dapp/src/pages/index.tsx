@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Blur } from "components/Blur";
 import Container from "components/Container";
 import { Hero } from "components/Hero";
+import Head from "next/head";
 
 const Home: NextPage = () => {
   let [query, setQuery] = useState("");
@@ -10,7 +11,10 @@ const Home: NextPage = () => {
 
   return (
     <main>
-      <title>{title}</title>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>{title}</title>
+      </Head>
       <Hero title={title} />
       <div className="pointer-events-none sticky top-0 z-10 -mb-10 overflow-hidden pb-10 sm:-mb-11 sm:pb-11 md:-mb-12 md:pb-12">
         <div className="relative">

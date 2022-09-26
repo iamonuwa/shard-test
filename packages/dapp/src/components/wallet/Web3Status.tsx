@@ -4,7 +4,7 @@ import { NetworkContextName } from "constants/index";
 import { useWalletModal } from "store/hooks/useWallet";
 import { shortenHex } from "utils/format";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import WalletModal from ".";
+import WalletModal from "./index";
 
 function Web3StatusInner() {
   const { account, error } = useWeb3React();

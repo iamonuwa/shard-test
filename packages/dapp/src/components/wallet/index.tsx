@@ -23,12 +23,10 @@ const WALLET_VIEWS = {
   PENDING: "pending",
 };
 
-const WalletModal: FC<WalletProps> = ({ ENSName }) => {
-  // important that these are destructed from the account-specific web3-react context
+const WalletModal: FC<WalletProps> = () => {
   const { active, account, connector, activate, error, chainId } = useWeb3React();
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
-  const previousWalletView = usePrevious(walletView);
 
   const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>();
 
@@ -84,7 +82,6 @@ const WalletModal: FC<WalletProps> = ({ ENSName }) => {
         .then(async () => {
           const walletAddress = await connector.getAccount();
           console.log("Wallet Address ", walletAddress);
-          //   logMonitoringEvent({ walletAddress });
         })
         .catch(error => {
           if (error instanceof UnsupportedChainIdError) {

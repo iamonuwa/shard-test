@@ -6,9 +6,9 @@ import { useServiceProvider } from "store/hooks/useServiceProvider";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 import { ServiceProvider } from "./SProvider";
-import Web3Status from "./wallet/Web3Status";
+import Web3Status from "./Wallet/Web3Status";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
-const WalletModal = dynamic(() => import("./wallet"), {
+const WalletModal = dynamic(() => import("./Wallet"), {
   ssr: false,
 });
 
