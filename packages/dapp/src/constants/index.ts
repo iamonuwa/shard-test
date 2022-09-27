@@ -15,3 +15,4 @@ export const IS_IN_IFRAME =
 
 export const DEFAULT_TXN_DISMISS_MS = 5000;
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 30;
+export const CONTRACT_ADDRESS = process.env.NEXT_CONTRACT_ADDRESS as string

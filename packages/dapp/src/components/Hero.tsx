@@ -1,6 +1,6 @@
 import { FC } from "react";
+import CarIllustration from "./Car";
 import Container from "./Container";
-import { Illustration } from "./Illustration";
 import { Navbar } from "./Navbar";
 
 type HeroProps = {
@@ -21,7 +21,7 @@ export const Hero: FC<HeroProps> = ({ title }) => {
             <p>Includes tax MOT and up-to-date DVLA vehicle registration information.</p>
           </div>
           <div className="hidden lg:flex lg:flex-auto lg:justify-center">
-            <Illustration />
+            <CarIllustration width={320} height={320} />
           </div>
         </div>
       </Container>

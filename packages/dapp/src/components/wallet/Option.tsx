@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
-import { Button } from "components/Button";
+import Button from "components/Button";
 
 interface OptionProps {
   onClick?: () => void;

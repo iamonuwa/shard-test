@@ -10,7 +10,7 @@ const Copy: FC<CopyProps> = ({ toCopy }) => {
   const [isCopied, setCopied] = useCopyClipboard();
   return (
     <div className="flex items-center space-x-1 cursor-pointer" onClick={() => setCopied(toCopy)}>
-      <ClipboardDocumentIcon />
+      <ClipboardDocumentIcon className="h-4 w-4" />
       <div className="">{isCopied ? "Copied" : "Copy Address"}</div>
     </div>
   );

@@ -1,8 +1,7 @@
 import Image from "next/future/image";
-import { Button } from "./Button";
+import Button from "./Button";
+import CarIllustration from "./Car";
 import Container from "./Container";
-import { Illustration } from "./Illustration";
-import { Logo } from "./Logo";
 import { Navbar } from "./Navbar";
 
 export const Header = () => {
@@ -19,7 +18,7 @@ export const Header = () => {
             <p>Includes tax MOT and up-to-date DVLA vehicle registration information.</p>
           </div>
           <div className="hidden lg:flex lg:flex-auto lg:justify-center">
-            <Illustration />
+            <CarIllustration />
           </div>
         </div>
       </Container>

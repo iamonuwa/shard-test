@@ -4,26 +4,16 @@ import { NamedSet } from "zustand/middleware";
 
 type WalletModalType = {
     isOpen: boolean;
-    closeWalletDialog: () => void;
-    openWalletDialog: () => void;
+    toggleDialog: () => void;
 };
 
 export const useWalletModal = createStore<WalletModalType>(
     (set: NamedSet<WalletModalType>) => ({
         isOpen: false,
-        openWalletDialog: () => {
-            set(
-                produce((state: WalletModalType) => {
-                    state.isOpen = true;
-                })
-            );
-        },
-        closeWalletDialog: () => {
-            set(
-                produce((state: WalletModalType) => {
-                    state.isOpen = false;
-                })
-            );
-        },
+        toggleDialog: () => {
+            set(produce((state: WalletModalType) => {
+                state.isOpen = !state.isOpen
+            }))
+        }
     })
 );

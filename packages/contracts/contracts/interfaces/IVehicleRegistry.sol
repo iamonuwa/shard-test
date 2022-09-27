@@ -3,6 +3,7 @@ pragma solidity 0.8.17;
 
 interface IVehicleRegistry {
     event RegisterVehicle(bytes32 ipfsHash, string id, uint256 timestamp);
+    event AddRepair(bytes32 ipfsHash, string id, uint256 timestamp);
     event UpdateHistory(
         string vin,
         uint256 timestamp,
@@ -23,7 +24,7 @@ interface IVehicleRegistry {
 
     function register(Vehicle memory data) external;
 
-    function addRepairHistory(string memory _vin, string memory note) external;
+    // function addRepairHistory(string memory _vin, string memory note) external;
 
-    function getVehicle(string memory _vin) external view;
+    // function getVehicle(string memory _vin) external view;
 }

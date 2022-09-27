@@ -1,38 +1,51 @@
-import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import { useServiceProvider } from "store/hooks/useServiceProvider";
-import { Button } from "./Button";
+import Button from "./Button";
 import { Modal } from "./Modal";
+import { useForm } from "react-hook-form";
+import { useBlockchain } from "hooks/useBlockchain";
+import { Input } from "./Form/Input";
+
+type FormState = {
+  wallet_address: string;
+};
 
 export const ServiceProvider = () => {
   const { isDialogOpen, toggleDialog } = useServiceProvider();
-  const { library } = useActiveWeb3React();
+  const { addServiceProvider } = useBlockchain();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormState>({ mode: "all" });
+
+  const assignRole = async (data: FormState) => {
+    await addServiceProvider(data.wallet_address);
+  };
 
   return (
-    <Modal isOpen={isDialogOpen} onClose={() => toggleDialog(false)}>
-      <div className="space-y-2">
-        <div className="">
-          <div className="text-lg font-medium leading-6 text-gray-900">Register New Service Provider</div>
-        </div>
+    <Modal isOpen={isDialogOpen} onClose={() => toggleDialog()}>
+      <form onSubmit={handleSubmit(assignRole)}>
+        <div className="space-y-2">
+          <div className="">
+            <div className="text-lg font-medium leading-6 text-gray-900">Register New Service Provider</div>
+          </div>
 
-        <div className="">
-          <label htmlFor="wallet_address" className="block text-sm font-medium text-gray-700">
-            Wallet Address
-          </label>
-          <div className="mt-1">
-            <input
+          <div className="w-full">
+            <Input
+              label="Wallet Address"
               type="text"
+              {...register("wallet_address")}
               name="wallet_address"
-              id="wallet_address"
-              className="block w-full border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="0x0000000000000000000000000000000000000000"
             />
           </div>
-        </div>
 
-        <Button className="w-full" color="blue">
-          Add Service Provider
-        </Button>
-      </div>
+          <Button type="submit" disabled={isSubmitting || Object.values(errors).length > 0} className="w-full">
+            Add Service Provider
+          </Button>
+        </div>
+      </form>
     </Modal>
   );
 };

@@ -1,11 +1,10 @@
 import { FC } from "react";
 import { classNames } from "./utils";
 
-type StepProps = {
+export type StepProps = {
   name: string;
   description: string;
-  href: string;
-  index: number;
+  index?: number;
 };
 
 export const Step: FC<{ step: StepProps; size: number }> = ({ step, size }) => {
@@ -29,10 +28,10 @@ export const Step: FC<{ step: StepProps; size: number }> = ({ step, size }) => {
               <span
                 className={classNames(
                   "flex h-10 w-10 items-center justify-center rounded-full",
-                  step.index > size ? "bg-indigo-600" : "border",
+                  step.index! > size ? "bg-indigo-600" : "border",
                 )}
               >
-                {step.index + 1}
+                {step.index! + 1}
               </span>
             </span>
             <span className="mt-0.5 ml-4 flex min-w-0 flex-col">

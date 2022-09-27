@@ -7,7 +7,7 @@ export function shortenHex(hex: string, length = 4) {
 
 export function formatEtherscanLink(
     type: "Account" | "Transaction",
-    data: [number, string]
+    data: [string]
 ) {
     switch (type) {
         case "Account": {

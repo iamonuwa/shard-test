@@ -10,7 +10,7 @@ import { useWalletModal } from "store/hooks/useWallet";
 import { injected, SUPPORTED_WALLETS } from "connectors";
 import { Modal } from "components/Modal";
 import AccountDetails from "components/AccountDetails";
-import Link from "next/link";
+import Link from "components/Link";
 
 interface WalletProps {
   ENSName?: string;
@@ -32,16 +32,16 @@ const WalletModal: FC<WalletProps> = () => {
 
   const [pendingError, setPendingError] = useState<boolean>();
 
-  const { isOpen, openWalletDialog, closeWalletDialog } = useWalletModal();
+  const { isOpen, toggleDialog } = useWalletModal();
 
   const previousAccount = usePrevious(account);
 
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && isOpen) {
-      openWalletDialog();
+      toggleDialog();
     }
-  }, [account, previousAccount, openWalletDialog, isOpen]);
+  }, [account, previousAccount, toggleDialog, isOpen]);
 
   // always reset to account view
   useEffect(() => {
@@ -196,7 +196,7 @@ const WalletModal: FC<WalletProps> = () => {
     }
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
       return (
-        <AccountDetails toggleWalletModal={closeWalletDialog} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+        <AccountDetails toggleWalletModal={toggleDialog} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
       );
     }
     return (
@@ -228,7 +228,7 @@ const WalletModal: FC<WalletProps> = () => {
         </div>
         <div className="text-sm">
           New to Ethereum?{" "}
-          <Link target="_blank" className="" href="https://ethereum.org">
+          <Link external className="" href="https://ethereum.org">
             Learn more about wallets
           </Link>
         </div>
@@ -237,7 +237,7 @@ const WalletModal: FC<WalletProps> = () => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={closeWalletDialog}>
+    <Modal isOpen={isOpen} onClose={toggleDialog}>
       <div className="space-y-4">{getModalContent()}</div>
     </Modal>
   );

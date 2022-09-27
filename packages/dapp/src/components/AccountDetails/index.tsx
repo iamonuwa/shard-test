@@ -4,8 +4,10 @@ import { FC } from "react";
 import { formatEtherscanLink, shortenHex } from "utils/format";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
 import Copy from "./Copy";
-import Link from "next/link";
-import { Button } from "components/Button";
+import Button from "components/Button";
+import Link from "components/Link";
+import * as blockies from "blockies-ts";
+import Image from "next/future/image";
 
 interface AccountDetailsProps {
   toggleWalletModal: () => void;
@@ -13,36 +15,38 @@ interface AccountDetailsProps {
 }
 
 const AccountDetails: FC<AccountDetailsProps> = ({ toggleWalletModal, openOptions }) => {
-  const { chainId, account, connector } = useActiveWeb3React();
+  const { account, connector } = useActiveWeb3React();
+  const blockie = blockies.create({ seed: account! }).toDataURL();
 
   return (
     <div className="space-y-2">
       <div className="text-center">
-        <div className="flex flex-col">
-          <div className="font-base font-extrabold font-sans">{shortenHex(account!)}</div>
+        <div className="flex justify-center items-center flex-col">
+          <Image src={blockie} width={56} height={56} className="rounded-full" alt={`Avatar for ${account}`} />
+          <div className="font-base text-lg font-extrabold font-sans">{shortenHex(account!, 8)}</div>
         </div>
         <div className="flex justify-center w-full pt-12">
           <div className="text-xs w-1/2 justify-center cursor-pointer">
             <Copy toCopy={account!} />
           </div>
           <Link
-            target="_blank"
-            href={formatEtherscanLink("Account", [chainId!, account!])}
+            external
+            href={formatEtherscanLink("Account", [account!])}
             className="flex items-center justify-center space-x-1 text-xs outline-none ring-0 cursor-pointer"
           >
-            <ArrowTrendingUpIcon />
+            <ArrowTrendingUpIcon className="h-4 w-4" />
             <span>View on Explorer</span>
           </Link>
         </div>
-        <div className="flex justify-between pt-6 space-y-2">
+        <div className="flex flex-col justify-between pt-6 space-y-2">
+          <Button variant="primary" onClick={openOptions}>
+            Change Wallet
+          </Button>
           {connector !== injected && (
-            <Button onClick={() => (connector as any)?.close()} className="rounded-none">
+            <Button variant="danger" onClick={() => (connector as any)?.close()} className="w-full">
               Disconnect
             </Button>
           )}
-          <Button className="text-blue-500" onClick={openOptions} variant="outlined">
-            Change Wallet
-          </Button>
         </div>
       </div>
     </div>

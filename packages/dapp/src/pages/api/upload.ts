@@ -9,8 +9,6 @@ const fleekAuth = {
     apiSecret: process.env.FLEEK_API_SECRET as string,
 };
 
-const readFileAsync = promisify(fs.readFile);
-
 export default async (req: any, res: any) => {
     // Setup incoming form data
     const form = new formidable.IncomingForm({ keepExtensions: true });
@@ -31,30 +29,31 @@ export default async (req: any, res: any) => {
 
     // Collect uploaded media
     const { upload: file } = data.files;
-    const fileData = await readFileAsync(file.path);
+    console.log(data)
+    // const fileData = await readFileAsync(file.path);
 
     // If file, name, and metadata provided
-    if (fileData && name && metadata) {
-        // Upload media to Fleek
-        const { publicUrl: fileUrl } = await fleekStorage.upload({
-            ...fleekAuth,
-            key: uuid(),
-            data: fileData
-        })
+    // if (fileData && name && metadata) {
+    //     // Upload media to Fleek
+    //     const { publicUrl: fileUrl } = await fleekStorage.upload({
+    //         ...fleekAuth,
+    //         key: uuid(),
+    //         data: fileData
+    //     })
 
-        // Upload metdata to Fleek
-        const { publicUrl: metadataUrl } = await fleekStorage.upload({
-            ...fleekAuth,
-            key: uuid(),
-            data: metadata,
-        });
+    //     // Upload metdata to Fleek
+    //     const { publicUrl: metadataUrl } = await fleekStorage.upload({
+    //         ...fleekAuth,
+    //         key: uuid(),
+    //         data: metadata,
+    //     });
 
-        // Return fileUrl and metadataUrl
-        res.send({ fileUrl, metadataUrl });
-    } else {
-        // Else, return 501
-        res.status(501);
-    }
+    //     // Return fileUrl and metadataUrl
+    //     res.send({ fileUrl, metadataUrl });
+    // } else {
+    //     // Else, return 501
+    //     res.status(501);
+    // }
 
     // End
     res.end();

@@ -1,19 +1,17 @@
-import Link from "next/link";
 import dynamic from "next/dynamic";
-
-import { useRouter } from "next/router";
 import { useServiceProvider } from "store/hooks/useServiceProvider";
-import { Button } from "./Button";
+import Button from "./Button";
 import { Logo } from "./Logo";
 import { ServiceProvider } from "./SProvider";
 import Web3Status from "./Wallet/Web3Status";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
+import { AddHistoryModal } from "./AddHistory";
+import Link from "./Link";
 const WalletModal = dynamic(() => import("./Wallet"), {
   ssr: false,
 });
 
 export const Navbar = () => {
-  const router = useRouter();
   const { toggleDialog } = useServiceProvider();
   const { account } = useActiveWeb3React();
   return (
@@ -26,11 +24,11 @@ export const Navbar = () => {
       <div className="space-x-2 divide-x divide-double">
         {account && (
           <>
-            <Button className="font-mono" onClick={() => toggleDialog(true)}>
-              Add Service Provider
-            </Button>
-            <Button className="font-mono" onClick={() => router.push("/create")}>
+            <Link className="font-mono" href="/create">
               Register Vehicle
+            </Link>
+            <Button className="font-mono" onClick={() => toggleDialog()}>
+              Add Service Provider
             </Button>
           </>
         )}
@@ -38,6 +36,7 @@ export const Navbar = () => {
       </div>
       <ServiceProvider />
       <WalletModal />
+      <AddHistoryModal />
     </div>
   );
 };
