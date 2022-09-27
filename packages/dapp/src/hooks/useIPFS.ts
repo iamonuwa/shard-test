@@ -1,20 +1,8 @@
-import { create } from "ipfs-http-client";
+import axios from "axios";
 import { useState } from "react";
 import { getIpfsHashFromBytes32 } from "utils/convert";
+import { client } from "utils/ipfs";
 
-const projectId = process.env.NEXT_INFURA_IPFS_API_KEY as string;
-const projectSecret = process.env.NEXT_INFURA_IPFS_API_SECRET as string;
-
-const auth = "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
-
-const client = create({
-    host: 'ipfs.infura.io',
-    port: 5001,
-    protocol: 'https',
-    headers: {
-        authorization: auth,
-    },
-});
 
 export type Metadata = {
     vehicle_number: string;
@@ -27,28 +15,36 @@ export type Metadata = {
 }
 
 type IPFS = {
-    metadata: Metadata
-    getMetadata: (ipfsHash: string) => void
+    getMetadata: (ipfsHash: string) => Promise<Metadata>
     uploadMetadata: (data: any) => Promise<string>
+    formatMetadata: (data: any[]) => void
 }
 
 export const useIPFS = (): IPFS => {
-    const [metadata, setMetadata] = useState<any>()
-    const getMetadata = async (hash: string) => {
+    const getMetadata = async (hash: string): Promise<Metadata> => {
         const cid = getIpfsHashFromBytes32(hash);
-        const payload = await client.cat(cid)
-        for await (const item of payload) {
-            const data = new TextDecoder().decode(item)
-            setMetadata({
-                ...JSON.parse(data),
-                hash,
-                cid
-            })
-        }
+        return await (await axios.get(`https://ipfs.io/ipfs/${cid}`)).data
+        // const payload = await client.cat(cid)
+        // for await (const item of payload) {
+        //     const data = new TextDecoder().decode(item)
+        //     // setMetadata({
+        //     //     ...JSON.parse(data),
+        //     //     hash,
+        //     //     cid
+        //     // })
+        // }
     }
+
     const uploadMetadata = async (data: any): Promise<string> => {
         const result = await client.add(Buffer.from(JSON.stringify(data)))
         return result.path
     }
-    return { metadata, getMetadata, uploadMetadata }
+
+    const formatMetadata = async (data: any[]) => {
+        const result = data.forEach(async (item) => await getMetadata(item.ipfsHash))
+        console.log(result)
+
+        return result
+    }
+    return { formatMetadata, getMetadata, uploadMetadata }
 }

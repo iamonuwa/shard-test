@@ -149,7 +149,11 @@ const RegisterVehicle: NextPage = () => {
             </div>
             <div className="flex sm:justify-center md:justify-end">
               {account ? (
-                <Button disabled={isSubmitting || Object.values(errors).length > 0} className="sm:w-full md:w-64">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || Object.values(errors).length > 0}
+                  className="sm:w-full md:w-64"
+                >
                   {steps.length > index ? "Next" : "Submit Vehicle Information"}
                 </Button>
               ) : (

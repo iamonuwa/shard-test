@@ -16,13 +16,12 @@ export const useVehicleRegistry = createStore<VehicleRegistryType>(
         loading: false,
         error: null,
         loadVehicles: async () => {
-            const { data, loading, error } = await loadRegisteredVehicleQuery()
-            set(produce((state: VehicleRegistryType) => ({
-                ...state,
-                data,
-                error,
-                loading
-            })))
+            const { data, error, loading } = await loadRegisteredVehicleQuery()
+            set(produce((state: VehicleRegistryType) => {
+                state.error = error?.message as string
+                state.loading = loading
+                state.data = data
+            }))
         }
     })
 );

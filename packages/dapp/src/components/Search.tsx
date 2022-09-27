@@ -1,23 +1,21 @@
-import { FC } from "react";
+import { FC, forwardRef } from "react";
 import Container from "./Container";
+import { Input, InputProps } from "./Form/Input";
 
-type SearchProps = {
-  query: string;
-  onChange: (value: string) => void;
-};
+type SearchInputProps = InputProps & {};
 
-export const Search: FC<SearchProps> = ({ query, onChange }) => {
+export const Search: FC<SearchInputProps> = forwardRef(({ ...rest }, ref) => {
   return (
     <div className="pointer-events-auto relative bg-white shadow-[0_1px_3px_rgba(15,23,42,0.08)] sm:pb-0">
       <Container className="flex flex-col sm:flex-row sm:items-center">
         <div className="relative flex-auto">
-          <input
+          <Input
+            ref={ref}
+            {...rest}
             type="search"
-            value={query}
-            onChange={e => onChange(e.target.value)}
             aria-label="Search vehicle information"
             placeholder="Search vehicle information"
-            className="block border-none focus:border-none w-full appearance-none bg-transparent py-6 pr-4 pl-9 text-base text-slate-900 transition placeholder:text-slate-400 focus:outline-none sm:text-[0.8125rem] sm:leading-6 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none"
+            className="block h-20 border-none focus:border-none w-full appearance-none bg-transparent py-6 pr-4 pl-9 text-base text-slate-900 transition placeholder:text-slate-400 focus:outline-none sm:text-[0.8125rem] sm:leading-6 [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none"
           />
           <svg
             viewBox="0 0 20 20"
@@ -30,4 +28,4 @@ export const Search: FC<SearchProps> = ({ query, onChange }) => {
       </Container>
     </div>
   );
-};
+});

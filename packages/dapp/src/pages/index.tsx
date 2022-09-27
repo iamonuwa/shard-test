@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Fragment, useEffect, useState } from "react";
+import { ChangeEvent, Fragment, useCallback, useEffect, useState } from "react";
 import { Blur } from "components/Blur";
 import Container from "components/Container";
 import { Hero } from "components/Hero";
@@ -9,13 +9,32 @@ import { Search } from "components/Search";
 import { BoltSlashIcon, InformationCircleIcon } from "@heroicons/react/24/solid";
 import { Footer } from "components/Footer";
 import Table from "components/Table";
-import { useIPFS } from "hooks/useIPFS";
+import { Metadata, useIPFS } from "hooks/useIPFS";
+import Fuse from "fuse.js";
 
 const Home: NextPage = () => {
   const title = "Decentralized Vehicle Database";
-  let [query, setQuery] = useState("");
   const { loadVehicles, data, error, loading } = useVehicleRegistry();
-  const { metadata, getMetadata } = useIPFS();
+  const { getMetadata } = useIPFS();
+  const [metadata, setMetadata] = useState<Metadata[]>([]); // original data
+  let renderOnce: boolean = false;
+  const query = new Fuse(metadata, {
+    keys: ["vehicle_number", "registration_place", "manufacture_year", "vehicle_model.name"],
+  });
+
+  const loadMetadata = async () => {
+    let metadataList: Metadata[] = [];
+    data.forEach(async item => {
+      const metadataObject = await getMetadata(item.ipfsHash);
+      metadataList.push(metadataObject);
+    });
+    setMetadata(metadataList);
+  };
+
+  useEffect(() => {
+    loadVehicles();
+    loadMetadata();
+  }, [data]);
 
   const columns = [
     {
@@ -23,12 +42,16 @@ const Home: NextPage = () => {
       accessor: "vehicle_number",
     },
     {
+      Header: "Brand",
+      accessor: "vehicle_model.name",
+    },
+    {
       Header: "Engine",
       accessor: "engine",
     },
     {
       Header: "Fuel Consumption",
-      accessor: "fuel",
+      accessor: "fuel_type",
     },
     {
       Header: "Manufacture year",
@@ -40,9 +63,18 @@ const Home: NextPage = () => {
     },
   ];
 
-  useEffect(() => {
-    loadVehicles();
-  }, []);
+  const handleFilter = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const filterInput = e.target.value;
+      if (filterInput.length > 3) {
+        const filterResult = query.search(e.target.value).map(item => item.item);
+        setMetadata(filterResult);
+      } else {
+        loadMetadata();
+      }
+    },
+    [data],
+  );
 
   return (
     <Fragment>
@@ -54,13 +86,13 @@ const Home: NextPage = () => {
       <div className="pointer-events-none sticky top-0 z-10 -mb-10 overflow-hidden pb-10 sm:-mb-11 sm:pb-11 md:-mb-12 md:pb-12">
         <div className="relative">
           <Blur className="absolute bottom-[-16px] left-1/2 ml-[-570px] w-[1140px]" />
-          <Search onChange={setQuery} query={query} />
+          <Search onChange={handleFilter} />
         </div>
       </div>
       <main className="py-4">
         <Container>
           {loading && (
-            <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
+            <div className="shadow rounded-md p-4 max-w-sm w-full mx-auto">
               <div className="animate-pulse flex space-x-4">
                 <div className="rounded-full bg-slate-200 h-10 w-10"></div>
                 <div className="flex-1 space-y-6 py-1">
@@ -82,12 +114,12 @@ const Home: NextPage = () => {
               <p className="text-lg text-gray-600 font-bold">An error occured {error}</p>
             </div>
           )}
-          {!error && data.length > 0 ? (
+          {!error && metadata.length > 0 ? (
             <div className="mt-4 flex flex-col">
               <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                  <div className="overflow-hidden ring-1 ring-black ring-opacity-5">
-                    <Table data={data} columns={columns} />
+                  <div className="-mx-4 mt-8 overflow-hidden shadow sm:-mx-6 md:mx-0">
+                    <Table data={metadata} columns={columns} />
                   </div>
                 </div>
               </div>

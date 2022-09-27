@@ -1,12 +1,11 @@
-import { forwardRef, HTMLAttributes } from "react";
+import { ComponentPropsWithRef, forwardRef, HTMLAttributes } from "react";
+import { classNames } from "utils";
 
-type InputProps = HTMLAttributes<HTMLInputElement> & {
-  type?: string;
-  name?: string;
+export type InputProps = ComponentPropsWithRef<"input"> & {
   label?: string;
 };
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({ label, type, name, ...rest }, ref) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(({ label, className, ...rest }, ref) => {
   return (
     <>
       {label && (
@@ -15,11 +14,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ label, type, name, ...
         </label>
       )}
       <input
-        type={type}
         ref={ref}
-        name={name}
         {...rest}
-        className="block w-full h-10 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        className={classNames(
+          "block h-10 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+          className!,
+        )}
       />
     </>
   );

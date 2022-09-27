@@ -1,15 +1,15 @@
+import { Metadata } from "hooks/useIPFS";
 import { FC } from "react";
 import { useTable } from "react-table";
 
 interface TableProps {
   columns: any;
-  data: any;
+  data: any[];
   onRowSelect?: (item: any) => void;
 }
 
 const Table: FC<TableProps> = ({ columns, data, onRowSelect }) => {
   const tableInstance = useTable({ columns, data });
-
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
   return (
     <table className="min-w-full divide-y divide-gray-300" {...getTableProps()}>
