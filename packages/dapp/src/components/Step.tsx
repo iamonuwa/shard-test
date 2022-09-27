@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { classNames } from "./utils";
+import { classNames } from "utils";
 
 export type StepProps = {
   name: string;

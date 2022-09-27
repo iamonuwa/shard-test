@@ -1,13 +1,16 @@
 import { FC } from "react";
 import CarIllustration from "./Car";
 import Container from "./Container";
-import { Navbar } from "./Navbar";
+import Navbar from "./Navbar";
+import Image from "next/future/image";
 
 type HeroProps = {
   title: string;
+  image?: string;
+  alt?: string;
 };
 
-export const Hero: FC<HeroProps> = ({ title }) => {
+export const Hero: FC<HeroProps> = ({ title, image, alt }) => {
   return (
     <header className="relative overflow-hidden bg-slate-50 pt-6">
       <div className="absolute inset-0 shadow-[inset_0_-1px_0_rgba(22,27,59,0.04)]" />
@@ -21,7 +24,7 @@ export const Hero: FC<HeroProps> = ({ title }) => {
             <p>Includes tax MOT and up-to-date DVLA vehicle registration information.</p>
           </div>
           <div className="hidden lg:flex lg:flex-auto lg:justify-center">
-            <CarIllustration width={320} height={320} />
+            {image ? <Image src={image} alt={alt!} /> : <CarIllustration width={320} height={320} />}
           </div>
         </div>
       </Container>

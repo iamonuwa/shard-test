@@ -1,5 +1,5 @@
 import { ComponentPropsWithRef, forwardRef } from "react";
-import { classNames } from "./utils";
+import { classNames } from "utils";
 
 export type Variant = "primary" | "secondary" | "danger" | "success" | "pending";
 export type Size = "sm" | "md" | "lg";

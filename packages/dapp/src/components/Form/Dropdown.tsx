@@ -1,7 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { FC, forwardRef, Fragment, HTMLAttributes, ReactNode } from "react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { classNames } from "../utils";
+import { classNames } from "utils";
 
 interface IBaseProps extends HTMLAttributes<HTMLSelectElement> {}
 
@@ -71,8 +71,6 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>((props, ref) => {
       })
     );
   };
-
-  console.log(valuePropFn(selected));
 
   return (
     <div className={rootClassName}>

@@ -1,4 +1,4 @@
-import { injected } from "connectors";
+import { injected, walletconnect } from "connectors";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import { FC } from "react";
 import { formatEtherscanLink, shortenHex } from "utils/format";
@@ -42,11 +42,12 @@ const AccountDetails: FC<AccountDetailsProps> = ({ toggleWalletModal, openOption
           <Button variant="primary" onClick={openOptions}>
             Change Wallet
           </Button>
-          {connector !== injected && (
-            <Button variant="danger" onClick={() => (connector as any)?.close()} className="w-full">
-              Disconnect
-            </Button>
-          )}
+          {connector !== injected ||
+            (connector !== walletconnect && (
+              <Button variant="danger" onClick={() => (connector as any)?.close()} className="w-full">
+                Disconnect
+              </Button>
+            ))}
         </div>
       </div>
     </div>

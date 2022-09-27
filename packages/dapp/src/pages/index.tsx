@@ -6,14 +6,39 @@ import { Hero } from "components/Hero";
 import Head from "next/head";
 import { useVehicleRegistry } from "store/hooks/useVehicleRegistry";
 import { Search } from "components/Search";
-import { Vehicle } from "components/Vehicle";
 import { BoltSlashIcon, InformationCircleIcon } from "@heroicons/react/24/solid";
 import { Footer } from "components/Footer";
+import Table from "components/Table";
+import { useIPFS } from "hooks/useIPFS";
 
 const Home: NextPage = () => {
   const title = "Decentralized Vehicle Database";
   let [query, setQuery] = useState("");
   const { loadVehicles, data, error, loading } = useVehicleRegistry();
+  const { metadata, getMetadata } = useIPFS();
+
+  const columns = [
+    {
+      Header: "VIN",
+      accessor: "vehicle_number",
+    },
+    {
+      Header: "Engine",
+      accessor: "engine",
+    },
+    {
+      Header: "Fuel Consumption",
+      accessor: "fuel",
+    },
+    {
+      Header: "Manufacture year",
+      accessor: "manufacture_year",
+    },
+    {
+      Header: "Place of Registration",
+      accessor: "registration_place",
+    },
+  ];
 
   useEffect(() => {
     loadVehicles();
@@ -58,10 +83,14 @@ const Home: NextPage = () => {
             </div>
           )}
           {!error && data.length > 0 ? (
-            <div className="py-4 grid sm:grid-row-1 md:grid-cols-3 gap-4">
-              {data.map((vehicle, index) => (
-                <Vehicle key={index} data={vehicle} />
-              ))}
+            <div className="mt-4 flex flex-col">
+              <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                  <div className="overflow-hidden ring-1 ring-black ring-opacity-5">
+                    <Table data={data} columns={columns} />
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="h-64 w-full flex flex-col justify-center items-center">

@@ -32,7 +32,7 @@ const Vehicle: FC<NextPage> = () => {
   const data = useMemo(() => [], []);
   return (
     <Fragment>
-      <Hero title={`View repair history for ${vin}`} />
+      <Hero image={""} alt="" title={`View repair history for ${vin}`} />
       <main className="py-4">
         <Container>
           <div className="flex justify-end">

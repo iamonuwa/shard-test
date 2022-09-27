@@ -2,7 +2,7 @@ import Image from "next/future/image";
 import Button from "./Button";
 import CarIllustration from "./Car";
 import Container from "./Container";
-import { Navbar } from "./Navbar";
+import Navbar from "./Navbar";
 
 export const Header = () => {
   return (
