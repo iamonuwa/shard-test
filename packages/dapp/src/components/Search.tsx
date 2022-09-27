@@ -8,7 +8,7 @@ type SearchProps = {
 
 export const Search: FC<SearchProps> = ({ query, onChange }) => {
   return (
-    <div className="pointer-events-auto relative bg-white pb-4 shadow-[0_1px_3px_rgba(15,23,42,0.08)] sm:pb-0">
+    <div className="pointer-events-auto relative bg-white shadow-[0_1px_3px_rgba(15,23,42,0.08)] sm:pb-0">
       <Container className="flex flex-col sm:flex-row sm:items-center">
         <div className="relative flex-auto">
           <input

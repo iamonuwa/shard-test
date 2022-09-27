@@ -98,8 +98,8 @@ const RegisterVehicle: NextPage = () => {
                 <Dropdown
                   options={CARS}
                   label="Vehicle Model"
-                  keyPropFn={option => option.brand}
-                  valuePropFn={option => option.name}
+                  keyPropFn={option => option}
+                  valuePropFn={option => option && option?.name}
                   onSelected={item => setValue("vehicle_model", item as string)}
                   placeholder="Select Model"
                   selected={watch("vehicle_model")}
