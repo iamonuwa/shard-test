@@ -15,11 +15,11 @@ contract VehicleRegistry is IVehicleRegistry, RoleControl {
 
     constructor() RoleControl(msg.sender) {}
 
-    function register(Vehicle memory data) public onlyAdmin onlyServiceProvider {
-        require(data.ipfsHash != 0, "VehicleRegistry: Invalid IPFS HASH");
-        require(!data.vin.isEmpty(), "VehicleRegistry: Invalid VIN");
-        vehicles.push(Vehicle({ipfsHash: data.ipfsHash, vin: data.vin}));
-        emit RegisterVehicle(data.ipfsHash, data.vin, block.timestamp);
+    function register(bytes32 ipfsHash, string memory vin) public onlyAdmin onlyServiceProvider {
+        require(ipfsHash != 0, "VehicleRegistry: Invalid IPFS HASH");
+        require(!vin.isEmpty(), "VehicleRegistry: Invalid VIN");
+        vehicles.push(Vehicle({vin: vin}));
+        emit RegisterVehicle(ipfsHash, vin, block.timestamp);
     }
 
     function addRepair(bytes32 ipfsHash, string memory vin) public onlyAdmin onlyServiceProvider {

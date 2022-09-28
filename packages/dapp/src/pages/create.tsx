@@ -51,6 +51,7 @@ const RegisterVehicle: NextPage = () => {
     };
     if (index > steps.length) {
       const cid = await uploadMetadata(metadata);
+      console.log("cid", cid);
       await registerVehicle(cid, payload.vehicle_number);
     } else {
       setIndex(index + 1);

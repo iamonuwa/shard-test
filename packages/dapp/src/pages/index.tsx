@@ -12,22 +12,26 @@ import Table from "components/Table";
 import { Metadata, useIPFS } from "hooks/useIPFS";
 import Fuse from "fuse.js";
 import Link from "components/Link";
+import { useToasts } from "react-toast-notifications";
 
 const Home: NextPage = () => {
   const title = "Decentralized Vehicle Database";
+
   const { loadVehicles, data, error, loading } = useVehicleRegistry();
   const { getMetadata } = useIPFS();
   const [metadata, setMetadata] = useState<Metadata[]>([]);
   const query = new Fuse(metadata, {
-    keys: ["vehicle_number", "registration_place", "manufacture_year", "vehicle_model.name"],
+    keys: ["vehicle_number", "vehicle_model.name"],
   });
 
   const loadMetadata = async () => {
     let metadataList: Metadata[] = [];
     data.forEach(async item => {
       const metadataObject = await getMetadata(item.ipfsHash);
+      console.log(metadataObject);
       metadataList.push(metadataObject);
     });
+    console.log(metadataList);
     setMetadata(metadataList);
   };
 
@@ -74,7 +78,7 @@ const Home: NextPage = () => {
         const filterResult = query.search(e.target.value).map(item => item.item);
         setMetadata(filterResult);
       } else {
-        loadMetadata();
+        setMetadata(metadata);
       }
     },
     [data],

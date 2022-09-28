@@ -5,11 +5,8 @@ import { Signers } from "../types";
 import { expect } from "chai";
 import { deployVehicleRegistryFixture } from "./fixtures/VehicleInformation.fixture";
 import { Bytes, ethers } from "ethers";
-import { sha256 } from "ethers/lib/utils";
 import { deployRoleControlFixture } from "./fixtures/Role.fixture";
 
-let metadataHex: string;
-let metadataHash: string
 let metadataHashBytes: Bytes
 let zeroContentHashBytes: Bytes
 
@@ -25,9 +22,7 @@ describe("Unit tests", async () => {
 
         this.loadFixture = loadFixture;
 
-        metadataHex = ethers.utils.formatBytes32String('{}');
-        metadataHash = await sha256(metadataHex);
-        metadataHashBytes = ethers.utils.arrayify(metadataHash);
+        metadataHashBytes = ethers.utils.base58.decode("QmRLr6ddTgtmFXsp5jHKGpX9ZiaCn9SEQ8gQmwbxF4qgnA").slice(2)
 
         zeroContentHashBytes = ethers.utils.arrayify(ethers.constants.HashZero);
 
@@ -43,33 +38,22 @@ describe("Unit tests", async () => {
 
         it('fail to register vehicle when account is not a service provider', async function () {
             const contract = this.vehicleRegistry.connect(this.signers.sp1)
-            expect(contract.register({ vin: "0x0", ipfsHash: metadataHashBytes })).to.revertedWith("RoleControl: Restricted to service provider.");
+            expect(contract.register(metadataHashBytes, "VIN")).to.revertedWith("RoleControl: Restricted to service provider.");
         })
 
         it('fail to register vehicle without VIN', async function () {
             const roleControl = this.roleControl.connect(this.signers.admin)
             await roleControl.addServiceProvider(this.signers.sp1.address)
             const transaction = this.vehicleRegistry.connect(this.signers.sp1)
-            expect(transaction.register({ vin: "", ipfsHash: metadataHashBytes })).to.revertedWith("VehicleRegistry: Invalid VIN");
+            expect(transaction.register(metadataHashBytes, "")).to.revertedWith("VehicleRegistry: Invalid VIN");
         })
 
         it('fail to register vehicle without metadata', async function () {
             const roleControl = this.roleControl.connect(this.signers.admin)
             await roleControl.addServiceProvider(this.signers.sp1.address)
             const contract = this.vehicleRegistry.connect(this.signers.sp1)
-            const transaction = contract.register({ vin: "", ipfsHash: zeroContentHashBytes })
+            const transaction = contract.register(zeroContentHashBytes, "VIN")
             expect(transaction).to.revertedWith("VehicleRegistry: Invalid IPFS HASH");
-        })
-
-        it('update vehicle history', async function () {
-            const VIN = "0x0"
-            const roleControl = this.roleControl.connect(this.signers.admin)
-            await roleControl.addServiceProvider(this.signers.sp1.address)
-            const contract = await this.vehicleRegistry.connect(this.signers.sp1)
-            await contract.register({ vin: VIN, ipfsHash: metadataHashBytes })
-            // await contract.addRepairHistory(VIN, "Hello World")
-            console.log(await contract.vehicleRepairHistory(VIN))
-            // expect(contract.vehicleRepairHistory(VIN)).to.equal(VIN)
         })
     })
 })
