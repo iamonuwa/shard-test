@@ -6,6 +6,7 @@ import { IpfsHashToBytes32 } from "utils/convert";
 
 type Blockchain = {
     registerVehicle: (hash: string, vin: string) => void
+    addRepairHistory: (hash: string, vin: string) => void
     addServiceProvider: (account: string) => void
 }
 
@@ -21,12 +22,19 @@ export const useBlockchain = (): Blockchain => {
     }
 
     const addServiceProvider = async (account: string) => {
-        const signer = library?.getSigner();
         const vehicleRegistry: VehicleRegistry = VehicleRegistry__factory.connect(CONTRACT_ADDRESS, signer!);
         const tx = await vehicleRegistry.addServiceProvider(account);
         tx.wait(2);
         console.log(tx)
     }
 
-    return { addServiceProvider, registerVehicle }
+    const addRepairHistory = async (hash: string, vin: string) => {
+        const ipfsBytes = IpfsHashToBytes32(hash);
+        const vehicleRegistry: VehicleRegistry = VehicleRegistry__factory.connect(CONTRACT_ADDRESS, signer!);
+        const tx = await vehicleRegistry.addRepair(ipfsBytes, vin)
+        tx.wait(2)
+        console.log(tx)
+    }
+
+    return { addServiceProvider, registerVehicle, addRepairHistory }
 }

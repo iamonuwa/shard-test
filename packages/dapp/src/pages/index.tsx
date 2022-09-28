@@ -11,13 +11,13 @@ import { Footer } from "components/Footer";
 import Table from "components/Table";
 import { Metadata, useIPFS } from "hooks/useIPFS";
 import Fuse from "fuse.js";
+import Link from "components/Link";
 
 const Home: NextPage = () => {
   const title = "Decentralized Vehicle Database";
   const { loadVehicles, data, error, loading } = useVehicleRegistry();
   const { getMetadata } = useIPFS();
-  const [metadata, setMetadata] = useState<Metadata[]>([]); // original data
-  let renderOnce: boolean = false;
+  const [metadata, setMetadata] = useState<Metadata[]>([]);
   const query = new Fuse(metadata, {
     keys: ["vehicle_number", "registration_place", "manufacture_year", "vehicle_model.name"],
   });
@@ -61,6 +61,10 @@ const Home: NextPage = () => {
       Header: "Place of Registration",
       accessor: "registration_place",
     },
+    {
+      Header: "",
+      accessor: "view_btn",
+    },
   ];
 
   const handleFilter = useCallback(
@@ -75,6 +79,16 @@ const Home: NextPage = () => {
     },
     [data],
   );
+
+  const getRow = () =>
+    metadata.map(item => ({
+      ...item,
+      view_btn: (
+        <Link className="" href={`/vehicle/${item.vehicle_number.toLowerCase()}`}>
+          View repair history
+        </Link>
+      ),
+    }));
 
   return (
     <Fragment>
@@ -119,7 +133,7 @@ const Home: NextPage = () => {
               <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                   <div className="-mx-4 mt-8 overflow-hidden shadow sm:-mx-6 md:mx-0">
-                    <Table data={metadata} columns={columns} />
+                    <Table data={getRow()} columns={columns} />
                   </div>
                 </div>
               </div>

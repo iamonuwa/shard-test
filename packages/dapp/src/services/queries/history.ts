@@ -7,44 +7,51 @@ import {
 import { initializeApollo } from 'utils/apollo';
 
 const FETCH_VEHICLE_REPAIR_HISTORY = gql`
-    query {
-        histories {
+    query getHistory($id: String!) {
+        vehicle(id: $id) {
+            id
+            repairs {
                 id
-                vin
-                note
+                ipfsHash
+                createdAt
                 user {
                     id
                 }
+            }
         }
     }
 `
 
-type Data = {
+export type HistoryData = {
     id: string
-    vin: string
-    note: string
-    user: {
+    repairs: {
         id: string
-    }
+        ipfsHash: string
+        createdAt: string
+        user: {
+            id: string
+        }
+    }[]
 }
 
-type History = {
-    histories: Data
+export type History = {
+    vehicle: HistoryData
 }
 
-export const loadVehicleHistoryQuery = async (vin: string): Promise<{ data: Data; error?: ApolloError; loading: boolean }> => {
+export const loadVehicleHistoryQuery = async (id: string): Promise<{ data: HistoryData; error?: ApolloError; loading: boolean }> => {
     const client: ApolloClient<NormalizedCacheObject> = initializeApollo()
     const { data, error, loading } = await client.query<History>({
         query: FETCH_VEHICLE_REPAIR_HISTORY,
         fetchPolicy: 'cache-first',
         notifyOnNetworkStatusChange: true,
         variables: {
-            vin
+            id
+            // id: "MOT-AA-123"
         }
     });
 
     return {
-        data: data.histories,
+        data: data.vehicle,
         error,
         loading,
     };

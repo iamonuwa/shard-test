@@ -9,6 +9,7 @@ interface TableProps {
 }
 
 const Table: FC<TableProps> = ({ columns, data, onRowSelect }) => {
+  console.log(data);
   const tableInstance = useTable({ columns, data });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
   return (

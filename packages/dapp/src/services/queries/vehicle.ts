@@ -5,11 +5,6 @@ import {
     NormalizedCacheObject,
 } from '@apollo/client';
 import { initializeApollo } from 'utils/apollo';
-import { getIpfsHashFromBytes32 } from 'utils/convert';
-import { client as ipfsClient } from "utils/ipfs"
-import { concat } from 'uint8arrays'
-import { Metadata } from 'hooks/useIPFS';
-import axios from "axios"
 
 const FETCH_REGISTERED_VEHICLES = gql`
     query {

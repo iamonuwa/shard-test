@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { useVehicleHistory } from "store/hooks/useVehicleHistory";
 import { Textarea } from "./Form/Textarea";
 import { useIPFS } from "hooks/useIPFS";
+import { useBlockchain } from "hooks/useBlockchain";
+import { useRouter } from "next/router";
 
 type FormState = {
   report: string;
@@ -13,6 +15,9 @@ type FormState = {
 export const AddHistoryModal = () => {
   const { isDialogOpen, toggleDialog } = useVehicleHistory();
   const { uploadMetadata } = useIPFS();
+  const { addRepairHistory } = useBlockchain();
+  const router = useRouter();
+  const vin = router?.query?.id?.toString().toUpperCase() as string;
 
   const {
     register,
@@ -22,6 +27,7 @@ export const AddHistoryModal = () => {
 
   const assignRole = async ({ report }: FormState) => {
     const cid = await uploadMetadata({ report });
+    await addRepairHistory(cid, vin);
     console.log(cid);
   };
 

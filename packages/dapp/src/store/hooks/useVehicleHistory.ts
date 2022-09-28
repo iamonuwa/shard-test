@@ -1,10 +1,10 @@
 import produce from "immer";
-import { loadVehicleHistoryQuery } from "services/queries/history";
+import { HistoryData, loadVehicleHistoryQuery } from "services/queries/history";
 import { createStore } from "store/root";
 import { NamedSet } from "zustand/middleware";
 
 export type VehicleHistoryType = {
-    data: any[];
+    data: HistoryData | null;
     loading: boolean
     error: string | null
     isDialogOpen: boolean
@@ -14,7 +14,7 @@ export type VehicleHistoryType = {
 
 export const useVehicleHistory = createStore<VehicleHistoryType>(
     (set: NamedSet<VehicleHistoryType>) => ({
-        data: [],
+        data: null,
         loading: false,
         error: null,
         isDialogOpen: false,

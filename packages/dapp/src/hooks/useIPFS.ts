@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 import { getIpfsHashFromBytes32 } from "utils/convert";
 import { client } from "utils/ipfs";
 
@@ -15,36 +14,23 @@ export type Metadata = {
 }
 
 type IPFS = {
-    getMetadata: (ipfsHash: string) => Promise<Metadata>
+    getMetadata: (ipfsHash: string) => Promise<any>
     uploadMetadata: (data: any) => Promise<string>
     formatMetadata: (data: any[]) => void
 }
 
 export const useIPFS = (): IPFS => {
-    const getMetadata = async (hash: string): Promise<Metadata> => {
+    const getMetadata = async (hash: string): Promise<any> => {
         const cid = getIpfsHashFromBytes32(hash);
         return await (await axios.get(`https://ipfs.io/ipfs/${cid}`)).data
-        // const payload = await client.cat(cid)
-        // for await (const item of payload) {
-        //     const data = new TextDecoder().decode(item)
-        //     // setMetadata({
-        //     //     ...JSON.parse(data),
-        //     //     hash,
-        //     //     cid
-        //     // })
-        // }
     }
 
     const uploadMetadata = async (data: any): Promise<string> => {
-        const result = await client.add(Buffer.from(JSON.stringify(data)))
-        return result.path
+        return await (await client.add(Buffer.from(JSON.stringify(data)))).path
     }
 
     const formatMetadata = async (data: any[]) => {
-        const result = data.forEach(async (item) => await getMetadata(item.ipfsHash))
-        console.log(result)
-
-        return result
+        return data.forEach(async (item) => await getMetadata(item.ipfsHash))
     }
     return { formatMetadata, getMetadata, uploadMetadata }
 }

@@ -2,34 +2,57 @@ import Button from "components/Button";
 import Container from "components/Container";
 import { Hero } from "components/Hero";
 import Table from "components/Table";
+import { useIPFS } from "hooks/useIPFS";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FC, Fragment, useMemo } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
+import { History } from "services/queries/history";
 import { useVehicleHistory } from "store/hooks/useVehicleHistory";
 
 const Vehicle: FC<NextPage> = () => {
   const router = useRouter();
-  const vin = router?.query?.id?.toString().toUpperCase();
-  const { toggleDialog } = useVehicleHistory();
+  const vin = router?.query?.id?.toString().toUpperCase() as string;
+
+  const { toggleDialog, loadHistory, data } = useVehicleHistory();
+  const { getMetadata } = useIPFS();
+  const [metadata, setMetadata] = useState<History[]>([]);
+
   const columns = [
     {
-      Header: "Assets",
-      accessor: "asset",
+      Header: "ID",
+      accessor: "id",
     },
-    {
-      Header: "Note",
-      accessor: "note",
-    },
+    // {
+    //   Header: "Note",
+    //   accessor: "report",
+    // },
     {
       Header: "Uploader",
-      accessor: "user",
+      accessor: "user.id",
     },
     {
-      Header: "Date repaired",
-      accessor: "date",
+      Header: "Date logged",
+      accessor: "createdAt",
     },
   ];
-  const data = useMemo(() => [], []);
+
+  const loadMetadata = async () => {
+    let metadataList: History[] = [];
+    data?.repairs.forEach(async item => {
+      const metadataObject = await getMetadata(item.ipfsHash);
+      metadataList.push({
+        ...item,
+        ...metadataObject,
+      });
+    });
+    setMetadata(metadataList);
+  };
+
+  useEffect(() => {
+    loadHistory(vin);
+    loadMetadata();
+  }, [data]);
+
   return (
     <Fragment>
       <Hero image={""} alt="" title={`View repair history for ${vin}`} />
@@ -41,8 +64,8 @@ const Vehicle: FC<NextPage> = () => {
           <div className="mt-4 flex flex-col">
             <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                  <Table data={data} columns={columns} />
+                <div className="-mx-4 mt-8 overflow-hidden shadow sm:-mx-6 md:mx-0">
+                  <Table data={metadata} columns={columns} />
                 </div>
               </div>
             </div>
