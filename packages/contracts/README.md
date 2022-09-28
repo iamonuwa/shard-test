@@ -1,13 +1,35 @@
-# Sample Hardhat Project
+# Vehicle Registration
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Simple vehicle registration smart contract.
 
-Try running some of the following tasks:
+## Getting Started
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+### Installing
+
+```bash
+git clone git@github.com:iamonuwa/shard-test.git
+cd shard-test/packages/contracts
+npm install
 ```
+
+### To Compile the contract
+
+```bash
+npm run build
+```
+
+### To deploy to goerli testnet
+
+```bash
+npm run deploy-testnet
+```
+
+## Additional features.
+
+Some of the featuers I would love to add to this.
+
+- [x] Make the history a struct just like the vehicle registry
+
+## License
+
+This project is licensed under the [MIT] License - see the LICENSE.md file for details
